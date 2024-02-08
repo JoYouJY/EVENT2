@@ -58,7 +58,7 @@ async function GetWeb3(){
   // web3 = new Web3("https://rpcapi.sonic.fantom.network/");
   
   console.log(web3.version);
-    
+  
   try {
      //await window.ethereum.send('eth_requestAccounts');
      await window.ethereum.enable();
@@ -107,6 +107,7 @@ async function ConnectWallet() {
   GetWeb3();
   FAEVENT1 = new web3.eth.Contract(mintabi, contractaddress);
   console.log("ConnectWallet()");
+  console.log(FAEVENT1);
 
   await GetWeb3();
 
@@ -121,15 +122,54 @@ async function ConnectWallet() {
   console.log(userAccount);
   userAccountsGol = userAccounts[0];
   console.log(userAccountsGol);
+  
+
   if (!userAccount) {
     // If userAccount is undefined, display an error message
     $("#walletAddressDisplay").text("Failed to connect Wallet. Check RPC or install Wallet.");
   } else {
     // If userAccount is defined, display the actual wallet address
-    $("#walletAddressDisplay").text(userAccount);
+    const usernameOLD = await FAEVENT1.methods.addressToUsername(userAccountsGol).call();
+    if (usernameOLD !== '') {
+        // If usernameOLD is not an empty string, display Connected: usernameOLD [first 4 and last 4 characters of userAccount]
+        const shortUserAccount = userAccount.substring(0, 4) + '...' + userAccount.substring(userAccount.length - 4);
+        $("#walletAddressDisplay").html("<strong>Connected: </strong>" + usernameOLD + " [" + shortUserAccount + "]");
+        const changenameContainer = document.getElementById("changenameContainer");
+        changenameContainer.style.display = "block";
+    } else {
+        // Otherwise, display Connected: userAccount
+        $("#walletAddressDisplay").html("<strong>Connected: </strong>" + userAccount);
+        // Select the register container element
+        const registerContainer = document.getElementById("registerContainer");
+        registerContainer.style.display = "block";
+        
+    }
+    // Flash the "Connected" message
+    $("#walletAddressDisplay").fadeOut(500).fadeIn(500);
+    
   }
 }
-
+async function switchToFantom() {
+  try{
+    await window.ethereum.request({
+    method: 'wallet_switchEthereumChain',
+    params: [{ chainId: '0xFA' }],    // sonic testnet is FAA5 
+    });
+  }catch (error) {
+    // Handle errors appropriately:
+    if (error.code === 4902) { // Check for "User rejected the request" error code
+      console.error("User rejected the network switch request.");
+      // Optionally display a user-friendly message explaining the situation
+    } else if (error.code === 4901) { // Check for "Chain not found" error code
+      console.error("Fantom Chain not found in your wallet.");
+      // Provide clear instructions on how to add the Fantom Chain (e.g., link to a guide)
+    } else {
+      console.error("Error switching to Fantom Chain:", error);
+      // Optionally display a generic error message for other unexpected errors
+    }
+  }
+ }
+ setTimeout(switchToFantom, 1000);
 // Example usage
 //ConnectWallet();
 
@@ -395,7 +435,7 @@ const addFantomChain = async () => {
 
 
 function mint1() {
-  $("#Result").append("<li>Minting 1 Ticket...</li>");
+  $("#Result").append("<li>Minting 1 Red Packet...</li>");
   FAEVENT1.methods.mint(1).estimateGas({ from: userAccountsGol, value: 900000000000000000 }, function(error, estimateGas) {
     if (error) {
       console.log(error);
@@ -413,16 +453,16 @@ function mint1() {
         var receiptarray = receipt.events.MintResult.returnValues[1];
         document.getElementById('deadline').style.display = 'none';
         if (receiptarray[0] > 0) {
-          $("#Result").append("<li><b>Get Bronze Ticket:</b> " + receiptarray[0] + "</li>");
+          $("#Result").append("<li><b>Get Youpling Red Packet:</b> " + receiptarray[0] + "</li>");
         }
         if (receiptarray[1] > 0) {
-          $("#Result").append("<li><b>Get Silver Ticket:</b> " + receiptarray[1] + "</li>");
+          $("#Result").append("<li><b>Get Youlong Red Packet:</b> " + receiptarray[1] + "</li>");
         }
         if (receiptarray[2] > 0) {
-          $("#Result").append("<li><b><i>Get Golden Ticket:</i></b> " + receiptarray[2] + "</li>");
+          $("#Result").append("<li><b><i>Get Yourake Red Packet:</i></b> " + receiptarray[2] + "</li>");
         }
         if (receiptarray[3] > 0) {
-          $("#Result").append("<li><b><i>Get Magical Ticket:</i></b> " + receiptarray[3] + "</li>");
+          $("#Result").append("<li><b><i>Get Youking Red Packet:</i></b> " + receiptarray[3] + "</li>");
         }
         console.log(receiptarray[0],receiptarray[1],receiptarray[2],receiptarray[3]);
         var resultDiv = $("#Result");
@@ -439,7 +479,7 @@ function mint1() {
   });
 }
 function mint10() {
-  $("#Result").append("<li>Minting 10 Tickets...</li>");
+  $("#Result").append("<li>Minting 10 Red Packets...</li>");
   FAEVENT1.methods.mint(10).estimateGas({ from: userAccountsGol, value: 9000000000000000000 }, function(error, estimateGas) {
     if (error) {
       console.log(error);
@@ -458,16 +498,16 @@ function mint10() {
         var receiptarray = receipt.events.MintResult.returnValues[1];
         document.getElementById('deadline').style.display = 'none';
         if (receiptarray[0] > 0) {
-          $("#Result").append("<li><b>Get Bronze Ticket:</b> " + receiptarray[0] + "</li>");
+          $("#Result").append("<li><b>Get Youpling Red Packet:</b> " + receiptarray[0] + "</li>");
         }
         if (receiptarray[1] > 0) {
-          $("#Result").append("<li><b>Get Silver Ticket:</b> " + receiptarray[1] + "</li>");
+          $("#Result").append("<li><b>Get Youlong Red Packet:</b> " + receiptarray[1] + "</li>");
         }
         if (receiptarray[2] > 0) {
-          $("#Result").append("<li><b><i>Get Golden Ticket:</i></b> " + receiptarray[2] + "</li>");
+          $("#Result").append("<li><b><i>Get Yourake Red Packet:</i></b> " + receiptarray[2] + "</li>");
         }
         if (receiptarray[3] > 0) {
-          $("#Result").append("<li><b><i>Get Magical Ticket:</i></b> " + receiptarray[3] + "</li>");
+          $("#Result").append("<li><b><i>Get Youking Red Packet:</i></b> " + receiptarray[3] + "</li>");
         }
         console.log(receiptarray[0],receiptarray[1],receiptarray[2],receiptarray[3]);
         var resultDiv = $("#Result");
@@ -490,6 +530,228 @@ document.getElementById('mint1').addEventListener('click', function() {
 document.getElementById('mint10').addEventListener('click', function() {
   mint10();
 });
+document.getElementById('registerName').addEventListener('click', function() {
+  registerUsername();
+});
+document.getElementById('changeName').addEventListener('click', function() {
+  changeUsername();
+});
+
+//-------------------REGISTER NAME CHANGE NAME ---------------------------------
+async function registerUsername() {
+  const username = document.getElementById('usernameInput').value;
+
+  // Regular expression to match characters other than a-z, A-Z, 0-9, or _
+  const regex = /^[a-zA-Z0-9_]+$/;
+
+  // Check if the username contains characters other than a-z, A-Z, 0-9, or _
+  if (!regex.test(username)) {
+    // If the username contains invalid characters, show a warning
+    alert('Username can only contain letters (a-z, A-Z), numbers (0-9), or underscore (_)');
+    return;
+  }
+
+  // Check if the username is already taken or not
+  const userAddress = await FAEVENT1.methods.getAddressFromUsername(username).call();
+  const usernameOLD = await FAEVENT1.methods.addressToUsername(userAccountsGol).call();
+  console.log(userAddress);
+  console.log(usernameOLD);
+
+  // Check if the userAddress is a burner address (0x000...000)
+  if (userAddress == '0x0000000000000000000000000000000000000000') {
+    
+    // Call the contract method to register the username
+    const transaction = await FAEVENT1.methods.registerPlayer(username).send({ from: userAccountsGol, value: 100000000000000000 });
+
+    // If transaction is successful or user already has a username, hide the register container
+    // You can replace the condition below with the appropriate event checks
+    if (transaction.status === true || userAddress !== '0x0000000000000000000000000000000000000000') {
+      document.getElementById('registerContainer').style.display = 'none';
+      const usernameNEW = await FAEVENT1.methods.addressToUsername(userAccountsGol).call();
+      if (usernameNEW !== '') {
+          // If usernameOLD is not an empty string, display Connected: usernameOLD [first 4 and last 4 characters of userAccount]
+          const shortUserAccount = userAccount.substring(0, 4) + '...' + userAccount.substring(userAccount.length - 4);
+          $("#walletAddressDisplay").html("<strong>Connected: </strong>" + usernameNEW + " [" + shortUserAccount + "]");
+      } else {
+          // Otherwise, display Connected: userAccount
+          $("#walletAddressDisplay").html("<strong>Connected: </strong>" + userAccount);
+      }
+      $("#walletAddressDisplay").fadeOut(500).fadeIn(500);
+    }
+    
+  } else {
+    // If the username is already taken, show a warning
+    alert('Username already taken!');
+  }
+}
+
+
+async function changeUsername() {
+  const username = document.getElementById('changeusernameInput').value;
+
+  // Regular expression to match characters other than a-z, A-Z, 0-9, or _
+  const regex = /^[a-zA-Z0-9_]+$/;
+
+  // Check if the username contains characters other than a-z, A-Z, 0-9, or _
+  if (!regex.test(username)) {
+    // If the username contains invalid characters, show a warning
+    alert('Username can only contain letters (a-z, A-Z), numbers (0-9), or underscore (_)');
+    return;
+  }
+  console.log(username);
+  // Check if the username is already taken or not
+  const userAddress = await FAEVENT1.methods.getAddressFromUsername(username).call();
+  const usernameOLD = await FAEVENT1.methods.addressToUsername(userAccountsGol).call();
+  console.log(userAddress);
+  console.log(usernameOLD);
+
+  // Check if the userAddress is a burner address (0x000...000)
+  if (userAddress == '0x0000000000000000000000000000000000000000') {
+    
+    // Call the contract method to register the username
+    const transaction = await FAEVENT1.methods.changeUsernameOwnerofUsername(username).send({ from: userAccountsGol,value: 5000000000000000000 });
+
+    // If transaction is successful or user already has a username, hide the register container
+    // You can replace the condition below with the appropriate event checks
+    if (transaction.status === true || userAddress !== '0x0000000000000000000000000000000000000000') {
+      document.getElementById('registerContainer').style.display = 'none';
+      const usernameNEW = await FAEVENT1.methods.addressToUsername(userAccountsGol).call();
+      if (usernameNEW !== '') {
+          // If usernameOLD is not an empty string, display Connected: usernameOLD [first 4 and last 4 characters of userAccount]
+          const shortUserAccount = userAccount.substring(0, 4) + '...' + userAccount.substring(userAccount.length - 4);
+          $("#walletAddressDisplay").html("<strong>Connected: </strong>" + usernameNEW + " [" + shortUserAccount + "]");
+      } else {
+          // Otherwise, display Connected: userAccount
+          $("#walletAddressDisplay").html("<strong>Connected: </strong>" + userAccount);
+      }
+      $("#walletAddressDisplay").fadeOut(500).fadeIn(500);
+      const changenameContainer = document.getElementById("changenameContainer");
+      changenameContainer.style.display = "block";
+    }
+    
+  } else {
+    // If the username is already taken, show a warning
+    alert('Username already taken!');
+  }
+}
+
+
+//-----------------MEssage system -------------------
+let previousMessageCount = 0;
+
+// Function to periodically check for new messages
+async function checkForNewMessages() {
+  try {
+    // Read the current message count from the contract
+    const currentMessageCount = await FAEVENT1.methods.getMessageCount(0).call();
+    console.log(currentMessageCount);
+
+    // Compare the current message count with the previous count
+    if (currentMessageCount > previousMessageCount) {
+      // If there are new messages, read the latest message from the contract
+      const CHAT = await FAEVENT1.methods.getLatestMessage(0, Math.min(currentMessageCount, 50)).call();
+
+      // Display the new messages in the text box
+      let Chatroomfull = "";
+      for (let i = 0; i < CHAT.length; i++) {
+        const NAME = await FAEVENT1.methods.addressToUsername(CHAT[i].sender).call();
+        let leftFour = CHAT[i].sender.substr(0, 4);
+        let rightFour = CHAT[i].sender.substr(-4);
+        const date = new Date(CHAT[i].timestamp * 1000); // Multiply by 1000 to convert seconds to milliseconds
+
+        
+        // Extract the various components of the date
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; // Months are zero-based, so add 1
+        const day = date.getDate();
+        let hours = date.getHours();
+        const minutes = date.getMinutes();
+        const seconds = date.getSeconds();
+
+        // Determine AM/PM
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+
+        // Convert 24-hour time to 12-hour time
+        if (hours > 12) {
+            hours -= 12;
+        } else if (hours === 0) {
+            hours = 12;
+        }
+
+        // Format the date and time
+        // Format the date and time
+        const formattedDateTime = `<span style="color: black">${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${ampm}</span>`;
+
+        // Wrap the NAME section with a <span> tag and apply yellow color
+        const nameSection = `<span style="color: yellow">${NAME}<sub>[${leftFour}...${rightFour}]</sub></span>`;
+        
+        let concatenated = `[<i>${formattedDateTime}</i>] ${nameSection}`;
+        let msg = replaceSpecialCharacters(String(CHAT[i].message));
+        Chatroomfull += `<li>${concatenated} :  ${msg}</li>`;
+      }
+      $("#Message").empty();
+      $("#Message").append(`<b><u>PreSonic Chatroom</b></u>${Chatroomfull}`);
+      //$("#Message").text($("#Message").text() + String(Chatroomfull));
+      //console.log(CHAT);
+      $("#Message").animate({ scrollTop: $("#Message").prop("scrollHeight") }, 500);
+    }
+
+    // Update the previous message count
+    previousMessageCount = currentMessageCount;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+function replaceSpecialCharacters(text) {
+  return text.replace(/&/g, '&amp;')
+             .replace(/</g, '&lt;')
+             .replace(/>/g, '&gt;')
+             .replace(/"/g, '&quot;')
+             .replace(/'/g, '&#39;');
+}
+
+
+// Periodically call the function to check for new messages
+setInterval(checkForNewMessages, 2000); // Check every 2 seconds
+
+// Define the async function for posting messages
+async function postMessage() {
+  const message = document.getElementById("userMesageInput").value.trim();
+
+  // Check if the message exceeds 230 words
+  const wordCount = message.length;
+  if (wordCount > 230) {
+      alert("Your message exceeds the maximum word limit of 230.");
+      return;
+  }
+
+  try {
+      // Perform the transaction to post the message
+      const transaction = await FAEVENT1.methods.postMessage(0,message).send({ from: userAccount, value: web3.utils.toWei("0.03", "ether") });
+      // Clear the message input box
+      document.getElementById("userMesageInput").value = "";
+      // Check for new messages
+      checkForNewMessages();
+  } catch (error) {
+      // Alert the error if the transaction fails
+      alert("Error posting message: " + error.message);
+  }
+}
+
+// Add event listener to the Post button
+document.getElementById("post").addEventListener("click", postMessage);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //-------------------------------------------------------------------------------------------
@@ -579,8 +841,84 @@ document.getElementById('viewPaintSwap').addEventListener('click', function() {
 
 
 //----------------------------------
-var contractaddress = '0xE87537D7cFB6a51D33D5d26eA8F13ea9362cBFfe';
+setTimeout(ConnectWallet, 1500); // 1500 milliseconds = 1.5 seconds
+var contractaddress = '0xfDB49602d39D76eC9A43082B84f10f15EE656769';
 var mintabi = [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
+			},
+			{
+				"internalType": "uint8",
+				"name": "_index",
+				"type": "uint8"
+			}
+		],
+		"name": "addMasterContract",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_newUsername",
+				"type": "string"
+			}
+		],
+		"name": "changeUsernameMasterContract",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_newUsername",
+				"type": "string"
+			}
+		],
+		"name": "changeUsernameOwnerofUsername",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "username",
+				"type": "string"
+			}
+		],
+		"name": "deleteUsernameToAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_attempts",
+				"type": "uint256"
+			}
+		],
+		"name": "mint",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
 	{
 		"anonymous": false,
 		"inputs": [
@@ -620,60 +958,107 @@ var mintabi = [
 		"type": "event"
 	},
 	{
-		"inputs": [],
-		"name": "contractEVENT",
-		"outputs": [
+		"anonymous": false,
+		"inputs": [
 			{
-				"internalType": "contract FARPG_EventInterface",
-				"name": "",
+				"indexed": true,
+				"internalType": "address",
+				"name": "playerAddress",
 				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "username",
+				"type": "string"
 			}
 		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "contractRAND",
-		"outputs": [
-			{
-				"internalType": "contract FARPG_RandomM1",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
+		"name": "PlayerRegistered",
+		"type": "event"
 	},
 	{
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_attempts",
+				"name": "_room",
 				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_message",
+				"type": "string"
 			}
 		],
-		"name": "mint",
+		"name": "postMessage",
 		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
+		"inputs": [
 			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
+				"internalType": "string",
+				"name": "_username",
+				"type": "string"
 			}
 		],
-		"stateMutability": "view",
+		"name": "registerPlayer",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint8",
+				"name": "_index",
+				"type": "uint8"
+			}
+		],
+		"name": "removeMasterContract",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [],
 		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "addr",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "username",
+				"type": "string"
+			}
+		],
+		"name": "setAddressToUsername",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "username",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "addr",
+				"type": "address"
+			}
+		],
+		"name": "setUsernameToAddress",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -718,10 +1103,415 @@ var mintabi = [
 		"type": "function"
 	},
 	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "playerAddress",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "oldUsername",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "newUsername",
+				"type": "string"
+			}
+		],
+		"name": "UsernameChanged",
+		"type": "event"
+	},
+	{
 		"inputs": [],
 		"name": "withdraw",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "addressToUsername",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "contractEVENT",
+		"outputs": [
+			{
+				"internalType": "contract FARPG_EventInterface",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "contractRAND",
+		"outputs": [
+			{
+				"internalType": "contract FARPG_RandomM1",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_username",
+				"type": "string"
+			}
+		],
+		"name": "getAddressFromUsername",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_room",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_index",
+				"type": "uint256"
+			}
+		],
+		"name": "getAMessage",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_room",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_indexstart",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_indexend",
+				"type": "uint256"
+			}
+		],
+		"name": "getBatchMessage",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "message",
+						"type": "string"
+					}
+				],
+				"internalType": "struct FARPG_NameSystem.MessageType[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_room",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_latestx",
+				"type": "uint256"
+			}
+		],
+		"name": "getLatestMessage",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "message",
+						"type": "string"
+					}
+				],
+				"internalType": "struct FARPG_NameSystem.MessageType[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getMasterContract",
+		"outputs": [
+			{
+				"internalType": "address[10]",
+				"name": "",
+				"type": "address[10]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_room",
+				"type": "uint256"
+			}
+		],
+		"name": "getMessageCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getTotalRooms",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "totalRooms",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getUsedRooms",
+		"outputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "usedRooms",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_address",
+				"type": "address"
+			}
+		],
+		"name": "getUsernameFromAddress",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "masterContracts",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "Messages",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "message",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "sentMessageNumber",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "UsedRooms",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"name": "usernameToAddress",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ];

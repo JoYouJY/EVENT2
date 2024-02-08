@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Fantom-Adventure EVENT1</title>
+    <title>Fantom-Adventure EVENT2</title>
     <link rel="shortcut icon" href="./image/favicon.ico">
     <link rel="stylesheet" href="styles.css">
   </head>
@@ -15,28 +15,121 @@
   <div style="display: flex; flex-direction: column;">
     <div class="header-container">
       <div class="connect-container">
-        <button class="connect-button" id="ConnectButton">Connect Wallet</button><span style="color:antiquewhite"> For Trust Wallet, manually switch to the Fantom Network by clicking on the top-right 3 dots.</span>
-        <div class="account-name" id="walletAddressDisplay">WALLET ADDRESS</div>
+        <span style="color:antiquewhite"> For Trust Wallet, manually switch to the Fantom Network by clicking on the top-right 3 dots.</span>
+        <div><button class="connect-button" id="ConnectButton" style="font-size: 26px;">Connect Wallet</button></div>
+        <div class="account-name" id="walletAddressDisplay" style="font-size:23px; text-transform: none; color:rgb(9, 225, 254)">WALLET ADDRESS: Not connected.</div>
       </div>
       <div class="title-container">
-        <h1 class="main-title">Fantom Adventure Event V1</h1><span style="color:beige;background-color: rgba(0, 0, 0, 0.5)">Event End in: <div id="timer" style="color:beige;background-color: rgba(0, 0, 0, 0.5)">00:00:00</div><span>
-        <p class="subtitle" style="background-color: rgba(0, 0, 0, 0.5);">Your Adventure Begins Here!</p>
+        <h1 class="main-title">Fate Adventure Event V2</h1>
+        <p class="subtitle" style="background-color: rgba(0, 0, 0, 0.5);">Your Adventure continues Here!</p>
       </div>
+    </div>
+
+
+
+    <style>
+      /* Center the container */
+      #registerContainer {
+        text-align: center;
+        font-family: Arial, sans-serif; /* Specify your amazing font design here */
+        color:rgb(241, 241, 55);
+        background-color: rgba(35, 35, 35, 0.7);
+        font-size: 26px
+      }
+    </style>
+    <div id="registerContainer" style="display: none">
+      <div>Register your username here</div>
+      <input type="text" id="usernameInput" placeholder="Enter username (max 15 characters)" style="font-size: 26px; width: 500px;">
+<button id="registerName" style="font-size: 26px;">Register (0.1 FTM)</button>
+      <div>only "a-z", "A-Z", "0-9", and "_"</div>
+    </div>
+
+
+
+    <style>
+      /* Center the container */
+      #changenameContainer {
+        text-align: center;
+        font-family: Arial, sans-serif; /* Specify your amazing font design here */
+        color:rgb(56, 223, 19);
+        background-color: rgba(35, 35, 35, 0.7);
+        font-size: 20px
+      }
+    </style>
+    <div id="changenameContainer" style="display: none">
+      <div>Change your username? </div>
+      <input type="text" id="changeusernameInput" placeholder="Enter username (max 15 characters)" style="font-size: 20px; width: 400px;">
+<button id="changeName" style="font-size: 20px;">Change (5 FTM)</button>
+      <div>only "a-z", "A-Z", "0-9", and "_"</div>
+    </div>
+
+
+    <style>
+      /* Center the container */
+      #presonicchatroom {
+        text-align: left;
+        width: 100%; /* Set the width to 100% */
+        font-family: Arial, sans-serif; /* Specify your amazing font design here */
+        color: rgb(2, 32, 52);
+        background-color: rgba(235, 235, 235, 0.7);
+        font-size: 16px;
+      }
+    
+      /* Style for the input box */
+      #userMesageInput {
+        font-size: 16px;
+        width: 60%; /* Set the width to 100% */
+        min-height: 50px; /* Set the minimum height */
+        overflow-y: auto; /* Add vertical scroll bar if needed */
+        resize: vertical; /* Allow vertical resizing */
+      }
+    
+      /* Style for the button */
+      #post {
+        font-size: 26px;
+        padding: 10px 20px; /* Adjust padding to increase button size */
+      }
+    </style>
+    
+    <div id="presonicchatroom" style="font-size: 26px"> PreSonic Chatroom [on Fantom Opera Mainnet - now]
+      <p class="scrollable-div" id="Message" style="font-size: 16px">__Messages (pre-Sonic):</p>
+      <div style="text-align: center" style="font-size: 16px">
+        <textarea id="userMesageInput" style="font-size: 16px" placeholder="Enter Message Here " rows="4"></textarea>
+        <button id="post">Wish | Post</button>
+      </div>
+    </div>
+    
+    <style>
+      /* Center the container */
+      #countdownevent {
+        text-align: center;
+        font-family: Arial, sans-serif; /* Specify your amazing font design here */
+        color:rgb(223, 19, 19);
+        background-color: rgba(35, 35, 35, 0.7);
+        font-size: 26px
+      }
+    </style>
+    <div id="countdownevent">
+      <div> ===================================</div>
+      <div>Red Packet of Dragon Year!</div>
+      <div> ===================================</div>
+    
+    <span style="color:beige;background-color: rgba(0, 0, 0, 0.5)">Event End in: <div id="timer" style="color:beige;background-color: rgba(0, 0, 0, 0.5)">00:00:00</div></span>
     </div>
 
     <div class="container">
       <ul class="results">
         <li class="result">
-        <a href="#"><img src="https://media-nft.paintswap.finance/250_0x581f867fc97fb5acde27785984bf59c193c48b44_1.jpg?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;h=500&amp;ixid=MnwxfDB8MXxyYW5kb218MHx8bGFuZHNjYXBlfHx8fHx8MTY2MjEyMDE3MQ&amp;ixlib=rb-1.2.1&amp;q=80&amp;utm_campaign=api-credit&amp;utm_medium=referral&amp;utm_source=unsplash_source&amp;w=500" width="500" height="500" alt=""></a>
+        <a href="#"><img src="https://assets.zyrosite.com/AE02xQxlx7SKvZON/5-ALpbBzOO2rU7EDVP.png?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;h=500&amp;ixid=MnwxfDB8MXxyYW5kb218MHx8bGFuZHNjYXBlfHx8fHx8MTY2MjEyMDE3MQ&amp;ixlib=rb-1.2.1&amp;q=80&amp;utm_campaign=api-credit&amp;utm_medium=referral&amp;utm_source=unsplash_source&amp;w=500" width="500" height="500" alt=""></a>
       </li>
       <li class="result">
-        <a href="#"><img src="https://media-nft.paintswap.finance/250_0x581f867fc97fb5acde27785984bf59c193c48b44_2.jpg?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;h=500&amp;ixid=MnwxfDB8MXxyYW5kb218MHx8bGFuZHNjYXBlfHx8fHx8MTY2MjEyMDE3NA&amp;ixlib=rb-1.2.1&amp;q=80&amp;utm_campaign=api-credit&amp;utm_medium=referral&amp;utm_source=unsplash_source&amp;w=500" width="500" height="500" alt=""></a>
+        <a href="#"><img src="https://assets.zyrosite.com/AE02xQxlx7SKvZON/6-mk358XyKkZIe80yV.png?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;h=500&amp;ixid=MnwxfDB8MXxyYW5kb218MHx8bGFuZHNjYXBlfHx8fHx8MTY2MjEyMDE3NA&amp;ixlib=rb-1.2.1&amp;q=80&amp;utm_campaign=api-credit&amp;utm_medium=referral&amp;utm_source=unsplash_source&amp;w=500" width="500" height="500" alt=""></a>
       </li>
       <li class="result">
-        <a href="#"><img src="https://media-nft.paintswap.finance/250_0x581f867fc97fb5acde27785984bf59c193c48b44_3.jpg?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;h=500&amp;ixid=MnwxfDB8MXxyYW5kb218MHx8bGFuZHNjYXBlfHx8fHx8MTY2MjEyMDE3Nw&amp;ixlib=rb-1.2.1&amp;q=80&amp;utm_campaign=api-credit&amp;utm_medium=referral&amp;utm_source=unsplash_source&amp;w=500" width="500" height="500" alt=""></a>
+        <a href="#"><img src="https://assets.zyrosite.com/AE02xQxlx7SKvZON/7-mP4NPG7kqJCX4Xg6.png?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;h=500&amp;ixid=MnwxfDB8MXxyYW5kb218MHx8bGFuZHNjYXBlfHx8fHx8MTY2MjEyMDE3Nw&amp;ixlib=rb-1.2.1&amp;q=80&amp;utm_campaign=api-credit&amp;utm_medium=referral&amp;utm_source=unsplash_source&amp;w=500" width="500" height="500" alt=""></a>
       </li>
       <li class="result">
-        <a href="#"><img src="https://media-nft.paintswap.finance/250_0x581f867fc97fb5acde27785984bf59c193c48b44_4.jpg?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;h=500&amp;ixid=MnwxfDB8MXxyYW5kb218MHx8bGFuZHNjYXBlfHx8fHx8MTY2MjEyMDE3OA&amp;ixlib=rb-1.2.1&amp;q=80&amp;utm_campaign=api-credit&amp;utm_medium=referral&amp;utm_source=unsplash_source&amp;w=500" width="500" height="500" alt=""></a>
+        <a href="#"><img src="https://assets.zyrosite.com/AE02xQxlx7SKvZON/8-YrDX1k6RQ0iPpe3o.png?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;h=500&amp;ixid=MnwxfDB8MXxyYW5kb218MHx8bGFuZHNjYXBlfHx8fHx8MTY2MjEyMDE3OA&amp;ixlib=rb-1.2.1&amp;q=80&amp;utm_campaign=api-credit&amp;utm_medium=referral&amp;utm_source=unsplash_source&amp;w=500" width="500" height="500" alt=""></a>
       </li>
 
     </ul>
@@ -121,7 +214,7 @@
     </svg>
   
     <div class="deadline-days">
-      MINTING ... 
+      MINTING ... (Sonic 1~2s, Opera 5~16s)
     </div>
   
   </div>    
@@ -147,10 +240,10 @@
   <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
   <script>
     // Set the target end time (48 hours from now)
-    const targetEndTime = new Date('Mon Jan 01 2024 12:59:59 GMT+0800');
+    const targetEndTime = new Date('Fri Mar 01 2024 12:59:59 GMT+0800');
     //const targetEndTime = new Date();
     console.log(targetEndTime);
-    targetEndTime.setHours(targetEndTime.getHours() + 48 );
+    //targetEndTime.setHours(targetEndTime.getHours() + 48 );
   
     // Update the countdown every second
     const timerInterval = setInterval(updateCountdown, 1000);
@@ -166,15 +259,17 @@
         document.getElementById('mint1').style.display = 'none';
         document.getElementById('mint10').style.display = 'none';
       } else {
-        // Calculate hours, minutes, and seconds
-        const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+        // Calculate days, hours, minutes, and seconds
+        const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-  
+
         // Display the countdown
-        const formattedTime = `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(seconds)}`;
+        const formattedTime = `${formatTime(days)}D ${formatTime(hours)}h ${formatTime(minutes)}m ${formatTime(seconds)}s`;
         document.getElementById('timer').innerHTML = formattedTime;
       }
+
     }
   
     function formatTime(time) {
