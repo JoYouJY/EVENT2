@@ -74,7 +74,10 @@ async function GetWeb3(){
   }
   
   var userAccounts = await web3.eth.getAccounts();
-  userAccount = userAccounts[0]
+  console.log(userAccounts);
+
+  
+  userAccount = userAccounts[0];
 
 }
 
@@ -102,12 +105,78 @@ async function GetWeb3(){
 // const web3 = new Web3(Web3.givenProvider) ;
 // const from = await web3.eth.getAccounts();
 var userAccountsGol ;
+
+async function selectAccount(accounts) {
+    // Find any existing accountSelector and remove it if found
+    const existingAccountSelector = document.querySelector('select.account-selector');
+    if (existingAccountSelector) {
+        existingAccountSelector.remove();
+    }
+
+    // Create a new dropdown menu to let the user select an account
+    const accountSelector = document.createElement('select');
+    accountSelector.classList.add('account-selector'); // Add a class for easier selection if needed
+    
+    // Populate the dropdown with available accounts
+    accounts.forEach(account => {
+        const option = document.createElement('option');
+        option.text = account;
+        option.value = account;
+        accountSelector.appendChild(option);
+    });
+
+    // Find the container div
+    const connectContainer = document.querySelector('.connect-container');
+    
+    // Append the dropdown to the container div
+    connectContainer.appendChild(accountSelector);
+
+
+}
+
+
+// Wait for the DOM content to load before attaching the event listener
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('change', async function(event) {
+        if (event.target.classList.contains('account-selector')) {
+            const selectedAccount = event.target.value;
+            console.log('Selected account:', selectedAccount);
+			userAccount =selectedAccount;
+			userAccountsGol = selectedAccount;
+            if (!selectedAccount) {
+                $("#walletAddressDisplay").text("Failed to connect Wallet. Check RPC or install Wallet.");
+            } else {
+                // You can define an async function here and use await inside it
+                try {
+                    const usernameOLD = await FAEVENT1.methods.addressToUsername(userAccountsGol).call();
+                    if (usernameOLD !== '') {
+                        const shortUserAccount = userAccount.substring(0, 4) + '...' + userAccount.substring(userAccount.length - 4);
+                        $("#walletAddressDisplay").html("<strong>Connected: </strong>" + usernameOLD + " [" + shortUserAccount + "]");
+                        const changenameContainer = document.getElementById("changenameContainer");
+                        changenameContainer.style.display = "block";
+                    } else {
+                        $("#walletAddressDisplay").html("<strong>Connected: </strong>" + userAccount);
+                        const registerContainer = document.getElementById("registerContainer");
+                        registerContainer.style.display = "block";
+                    }
+                    $("#walletAddressDisplay").fadeOut(500).fadeIn(500);
+                } catch (error) {
+                    console.error("Error:", error);
+                }
+            }
+        }
+    });
+});
+
+
+
+
 async function ConnectWallet() {
   addFantomChain();
   GetWeb3();
   FAEVENT1 = new web3.eth.Contract(mintabi, contractaddress);
-  console.log("ConnectWallet()");
-  console.log(FAEVENT1);
+  //console.log("ConnectWallet()");
+  //console.log(FAEVENT1);
 
   await GetWeb3();
 
@@ -115,9 +184,13 @@ async function ConnectWallet() {
   console.log(window.ethereum.isConnected());
   console.log(userAccount);
 
-  var userAccounts = await web3.eth.getAccounts();
-  userAccount = userAccounts[0];
 
+
+  var userAccounts = await web3.eth.getAccounts();
+  selectAccount(userAccounts);
+  //userAccount = selectAccount(userAccounts);
+  userAccount = userAccounts[0];
+  
   console.log(userAccounts);
   console.log(userAccount);
   userAccountsGol = userAccounts[0];
@@ -149,6 +222,60 @@ async function ConnectWallet() {
     
   }
 }
+
+
+async function switchWallet() {
+	addFantomChain();
+	GetWeb3();
+	FAEVENT1 = new web3.eth.Contract(mintabi, contractaddress);
+	//console.log("ConnectWallet()");
+	//console.log(FAEVENT1);
+  
+	await GetWeb3();
+  
+	console.log("ConnectWallet() getweb3 done");
+	console.log(window.ethereum.isConnected());
+	console.log(userAccount);
+  
+  
+  
+	var userAccounts = await web3.eth.getAccounts();
+	//userAccount = selectAccount(userAccounts);
+	userAccount = userAccounts[0];
+	
+	console.log(userAccounts);
+	console.log(userAccount);
+	userAccountsGol = userAccounts[0];
+	console.log(userAccountsGol);
+	
+  
+	if (!userAccount) {
+	  // If userAccount is undefined, display an error message
+	  $("#walletAddressDisplay").text("Failed to connect Wallet. Check RPC or install Wallet.");
+	} else {
+	  // If userAccount is defined, display the actual wallet address
+	  const usernameOLD = await FAEVENT1.methods.addressToUsername(userAccountsGol).call();
+	  if (usernameOLD !== '') {
+		  // If usernameOLD is not an empty string, display Connected: usernameOLD [first 4 and last 4 characters of userAccount]
+		  const shortUserAccount = userAccount.substring(0, 4) + '...' + userAccount.substring(userAccount.length - 4);
+		  $("#walletAddressDisplay").html("<strong>Connected: </strong>" + usernameOLD + " [" + shortUserAccount + "]");
+		  const changenameContainer = document.getElementById("changenameContainer");
+		  changenameContainer.style.display = "block";
+	  } else {
+		  // Otherwise, display Connected: userAccount
+		  $("#walletAddressDisplay").html("<strong>Connected: </strong>" + userAccount);
+		  // Select the register container element
+		  const registerContainer = document.getElementById("registerContainer");
+		  registerContainer.style.display = "block";
+		  
+	  }
+	  // Flash the "Connected" message
+	  $("#walletAddressDisplay").fadeOut(500).fadeIn(500);
+	  
+	}
+  }
+
+
 async function switchToFantom() {
   try{
     await window.ethereum.request({
@@ -577,6 +704,7 @@ async function registerUsername() {
           $("#walletAddressDisplay").html("<strong>Connected: </strong>" + userAccount);
       }
       $("#walletAddressDisplay").fadeOut(500).fadeIn(500);
+	  previousMessageCount =0;
     }
     
   } else {
@@ -625,6 +753,7 @@ async function changeUsername() {
           $("#walletAddressDisplay").html("<strong>Connected: </strong>" + userAccount);
       }
       $("#walletAddressDisplay").fadeOut(500).fadeIn(500);
+	  previousMessageCount =0;
       const changenameContainer = document.getElementById("changenameContainer");
       changenameContainer.style.display = "block";
     }
@@ -683,8 +812,15 @@ async function checkForNewMessages() {
         const formattedDateTime = `<span style="color: black">${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${ampm}</span>`;
 
         // Wrap the NAME section with a <span> tag and apply yellow color
-        const nameSection = `<span style="color: yellow">${NAME}<sub>[${leftFour}...${rightFour}]</sub></span>`;
-        
+
+        let nameSection;
+		if (NAME === '') {
+			nameSection = `<span style="color: yellow"><sub>[${leftFour}...${rightFour}]</sub></span>`;
+		} else {
+			nameSection = `<span style="color: yellow">${NAME}<sub></sub></span>`;
+			//nameSection = `<span style="color: yellow">${NAME}<sub>[${leftFour}...${rightFour}]</sub></span>`;
+		}
+
         let concatenated = `[<i>${formattedDateTime}</i>] ${nameSection}`;
         let msg = replaceSpecialCharacters(String(CHAT[i].message));
         Chatroomfull += `<li>${concatenated} :  ${msg}</li>`;
