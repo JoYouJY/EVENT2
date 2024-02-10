@@ -978,7 +978,7 @@ document.getElementById('viewPaintSwap').addEventListener('click', function() {
 
 //----------------------------------
 setTimeout(ConnectWallet, 1500); // 1500 milliseconds = 1.5 seconds
-var contractaddress = '0xfDB49602d39D76eC9A43082B84f10f15EE656769';
+var contractaddress = '0xE0C9d432B28aE44400cA85030fdE1A3D79D3Dfdc';
 var mintabi = [
 	{
 		"inputs": [
